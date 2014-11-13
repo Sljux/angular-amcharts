@@ -1,0 +1,12 @@
+{
+  "name": "angular-amcharts",
+  "description": "AmCharts directive for AngularJS framework",
+  "version": "0.0.0",
+  "homepage": "",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "angular": "1.2.x",
+    "amcharts": "~3.11.2"
+  }
+}

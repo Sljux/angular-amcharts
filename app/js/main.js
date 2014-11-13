@@ -1,14 +1,42 @@
 angular.module('sljuxAmCharts')
     .controller('MainCtrl', function($scope) {
-        $scope.chart = {
+        $scope.chartOptions = {
             id: 'chart1',
-            width: '75%',
-            height: '300px'
+            category: 'country',
+            css: {
+                width: '100%',
+                height: '300px'
+            },
+            animation: {
+                startEffect: 'elastic',
+                startDuration: 0.5,
+                startAlpha: 0.5,
+                sequencedAnimation: false
+            }
+        };
+
+        $scope.chartAxes = [
+            {
+                id: 'v1',
+                position: 'left'
+            },
+            {
+
+            }
+        ];
+
+        $scope.graphOptions = {
+            value: 'visits'
+        };
+        $scope.graphOptions1 = {
+            value: 'bla',
+            type: 'column'
         };
 
         $scope.chartData = [{
             "country": "USA",
-            "visits": 4252
+            "visits": 4252,
+            "bla": 123
         }, {
             "country": "China",
             "visits": 1882

@@ -8,7 +8,10 @@
 </head>
 <body ng-controller="MainCtrl">
 
-    <am-chart options="chart" data="chartData"></am-chart>
+    <am-chart options="chartOptions" data="chartData" value-axes="chartAxes">
+        <am-chart-graph options="graphOptions"></am-chart-graph>
+        <am-chart-graph options="graphOptions1"></am-chart-graph>
+    </am-chart>
 
     <script src="bower_components/amcharts/dist/amcharts/amcharts.js"></script>
     <script src="bower_components/amcharts/dist/amcharts/serial.js"></script>

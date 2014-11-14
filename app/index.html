@@ -9,12 +9,14 @@
 <body ng-controller="MainCtrl">
 
     <am-chart options="chartOptions" data="chartData" value-axes="chartAxes">
-        <am-chart-graph options="graphOptions"></am-chart-graph>
-        <am-chart-graph options="graphOptions1"></am-chart-graph>
+        <am-chart-graph options="humidityGraph"></am-chart-graph>
+        <am-chart-graph options="temperatureGraph"></am-chart-graph>
+        <am-chart-legend options="legendOptions"></am-chart-legend>
     </am-chart>
 
     <script src="bower_components/amcharts/dist/amcharts/amcharts.js"></script>
     <script src="bower_components/amcharts/dist/amcharts/serial.js"></script>
+    <script src="bower_components/moment/moment.js"></script>
     <script src="bower_components/angular/angular.js"></script>
 
     <script src="js/app.js"></script>

@@ -14,6 +14,10 @@ angular.module('sljuxAmCharts')
                     $scope.chart.addGraph(graph);
                 };
 
+                this.setLegend = function(legend) {
+                    $scope.chart.legend = legend;
+                };
+
                 this.refreshData = function() {
                     $scope.chart.validateData();
                 };
@@ -28,6 +32,7 @@ angular.module('sljuxAmCharts')
                     var options = scope.options || {};
 
                     scope.chart = configureChart(options);
+                    configureCategoryAxis(options);
 
                     function configureChart(options) {
                         var chart = new AmCharts.AmSerialChart();
@@ -55,6 +60,19 @@ angular.module('sljuxAmCharts')
                             }
                         }
                     }
+                    function configureCategoryAxis(options) {
+                        var categoryAxis = options.categoryAxis;
+
+                        if (categoryAxis) {
+                            if (categoryAxis.parseDates)
+                                scope.chart.categoryAxis.parseDates = categoryAxis.parseDates;
+                            if (categoryAxis.minPeriod)
+                                scope.chart.categoryAxis.minPeriod = categoryAxis.minPeriod;
+                            if (categoryAxis.position)
+                                scope.chart.categoryAxis.position = categoryAxis.position;
+
+                        }
+                    }
                 },
                 post: function (scope, elem, attrs, ctrl) {
 
@@ -62,20 +80,12 @@ angular.module('sljuxAmCharts')
                     var valueAxes = scope.valueAxes || {};
 
                     if (angular.isUndefined(options.id))
-                        throw new Error('A unique ID is required');
+                        throw new Error('A unique ID is required for every chart');
 
                     configureTemplate(elem, options);
                     configureValueAxes(valueAxes, scope.chart);
 
                     scope.chart.dataProvider = scope.data;
-
-                    /*
-                     var graph = new AmCharts.AmGraph();
-                     graph.valueField = "";
-                     graph.type = "column";
-                     graph.valueAxis = 'v1';
-                     chart.addGraph(graph);
-                     */
 
                     $timeout(function () {
                         scope.chart.write(scope.options.id);
@@ -115,13 +125,11 @@ angular.module('sljuxAmCharts')
         return {
             restrict: "E",
             require: "^amChart",
-            replace: true,
+            //replace: true,
             scope: {
                 options: '='
             },
             link: function(scope, element, attrs, amChartController) {
-                console.log(amChartController);
-
                 var options = scope.options || {};
 
                 var graph = configGraph();
@@ -133,11 +141,123 @@ angular.module('sljuxAmCharts')
                     graph.valueField = options.value;
                     graph.type = options.type || 'line';
 
-                    if (options)
-                        graph.valueAxis = options.id;
+                    if (options.valueAxis)
+                        graph.valueAxis = options.valueAxis;
+                    if (options.lineColor)
+                        graph.lineColor = options.lineColor;
+                    if (options.title)
+                        graph.title = options.title;
+
+                    return graph;
+                }
+            }
+        }
+    }])
+    .directive('amChartLegend', [function() {
+        return {
+            restrict: "E",
+            require: "^amChart",
+            //replace: true,
+            scope: {
+                options: '='
+            },
+            link: function(scope, element, attrs, amChartController) {
+                var options = scope.options || {};
+
+                var legend = configLegend();
+                amChartController.setLegend(legend);
+
+                function configLegend() {
+                    var legend = new AmCharts.AmLegend();
+
+                    configLabel();
+                    configMargins();
+                    configMarker();
+                    configPosition();
+                    configValueText();
+
+                    function configLabel() {
+                        if (options.labelText) {
+                            legend.labelText = options.labelText;
+                        }
+                    }
+                    function configMargins() {
+                        if (options.margin && options.margin.autoMargins === false) {
+                            legend.autoMargins = false;
+                            legend.marginTop = options.margin.top || 0;
+                            legend.marginRight = options.margin.right || 20;
+                            legend.marginLeft = options.margin.left || 20;
+                            legend.marginBottom = options.margin.bottom || 0;
+                        }
+                    }
+                    function configMarker() {
+                        if (options.marker) {
+                            legend.markerType = options.marker.type || 'square';
+                            legend.markerSize = options.marker.size || 16;
+                        }
+                    }
+                    function configPosition() {
+                        if (options.position) {
+
+                            legend.position = options.position.type;
+                            if (options.position.type === 'absolute') {
+                                if (angular.isDefined(options.position.top)) {
+                                    legend.top = options.position.top;
+                                }
+                                if (angular.isDefined(options.position.left)) {
+                                    legend.left = options.position.left;
+                                }
+                                if (angular.isDefined(options.position.right)) {
+                                    legend.right = options.position.right;
+                                }
+                                if (angular.isDefined(options.position.bottom)) {
+                                    legend.bottom = options.position.bottom;
+                                }
+                            }
+                        }
+                    }
+                    function configValueText() {
+                        if (options.valueText) {
+                            legend.valueText = options.valueText;
+                        }
+                    }
+
+                    return legend;
+                }
+            }
+        }
+    }])
+    /*
+    .directive('amChartCursor', [function() {
+        return {
+            restrict: "E",
+            require: "^amChart",
+            replace: true,
+            scope: {
+                options: '='
+            },
+            link: function(scope, element, attrs, amChartController) {
+                var options = scope.options || {};
+
+                var graph = configGraph();
+                amChartController.addGraph(graph);
+
+                function configGraph() {
+                    var graph = new AmCharts.AmGraph();
+
+                    graph.valueField = options.value;
+                    graph.type = options.type || 'line';
+
+                    if (options.valueAxis)
+                        graph.valueAxis = options.valueAxis;
+                    if (options.lineColor)
+                        graph.lineColor = options.lineColor;
+                    if (options.title)
+                        graph.title = options.title;
 
                     return graph;
                 }
             }
         }
     }]);
+        */

@@ -1,3 +1,5 @@
+"use strict";
+
 angular.module('sljuxAmCharts')
     .controller('MainCtrl', function ($scope) {
         $scope.chartOptions = {
@@ -67,6 +69,19 @@ angular.module('sljuxAmCharts')
             type: 'smoothedLine',
             title: 'Humidity'
         };
+
+        $scope.cursorOptions = {
+            position: 'mouse',
+            valueLineEnabled: true,
+            valueLineBalloonEnabled: true,
+            valueLineAxis: 'v2',
+            fullWidth: true,
+            color: '#0000FF',
+            alpha: 0.1,
+            bulletsEnabled: true,
+            bulletSize: 15
+        };
+
 
         var data = [{
             "time": 1415948400,

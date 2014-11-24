@@ -1,3 +1,5 @@
+"use strict";
+
 angular.module('sljuxAmCharts')
     .directive('amChart', ['$timeout', function ($timeout) {
         return {
@@ -14,6 +16,10 @@ angular.module('sljuxAmCharts')
                     $scope.chart.addGraph(graph);
                 };
 
+                this.setCursor = function(cursor) {
+                    $scope.chart.addChartCursor(cursor);
+                };
+
                 this.setLegend = function(legend) {
                     $scope.chart.legend = legend;
                 };
@@ -22,9 +28,13 @@ angular.module('sljuxAmCharts')
                     $scope.chart.validateData();
                 };
 
-                this.refreshAttrs = function () {
+                this.refreshAttrs = function() {
                     $scope.chart.validateNow();
                 };
+
+                this.logChart = function() {
+                    console.log($scope.chart);
+                }
             },
             template: '<div class="sljux-amchart" ng-transclude></div>',
             link: {
@@ -157,7 +167,6 @@ angular.module('sljuxAmCharts')
         return {
             restrict: "E",
             require: "^amChart",
-            //replace: true,
             scope: {
                 options: '='
             },
@@ -227,7 +236,6 @@ angular.module('sljuxAmCharts')
             }
         }
     }])
-    /*
     .directive('amChartCursor', [function() {
         return {
             restrict: "E",
@@ -237,27 +245,32 @@ angular.module('sljuxAmCharts')
                 options: '='
             },
             link: function(scope, element, attrs, amChartController) {
-                var options = scope.options || {};
+                var cursor = new AmCharts.ChartCursor();
 
-                var graph = configGraph();
-                amChartController.addGraph(graph);
+                configCursor();
 
-                function configGraph() {
-                    var graph = new AmCharts.AmGraph();
 
-                    graph.valueField = options.value;
-                    graph.type = options.type || 'line';
+                scope.$watch('options', function () {
+                    configCursor();
+                }, true);
 
-                    if (options.valueAxis)
-                        graph.valueAxis = options.valueAxis;
-                    if (options.lineColor)
-                        graph.lineColor = options.lineColor;
-                    if (options.title)
-                        graph.title = options.title;
+                function configCursor() {
+                    var options = scope.options || {};
 
-                    return graph;
+                    cursor.chartPosition = options.position || 'middle';
+                    cursor.valueLineEnabled = options.valueLineEnabled || false;
+                    cursor.valueLineBalloonEnabled = options.valueLineBalloonEnabled || false;
+                    cursor.valueLineAxis = options.valueLineAxis || false;
+                    cursor.fullWidth = options.fullWidth || false;
+                    cursor.cursorColor = options.color || '#000000';
+                    cursor.cursorAlpha = options.alpha || 1;
+                    cursor.bulletsEnabled = options.bulletsEnabled || false;
+                    cursor.bulletSize = options.bulletSize || 8;
+
+                    amChartController.setCursor(cursor);
+                    amChartController.refreshAttrs();
+                    amChartController.logChart();
                 }
             }
         }
     }]);
-        */

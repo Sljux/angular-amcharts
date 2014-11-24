@@ -12,7 +12,10 @@
         <am-chart-graph options="humidityGraph"></am-chart-graph>
         <am-chart-graph options="temperatureGraph"></am-chart-graph>
         <am-chart-legend options="legendOptions"></am-chart-legend>
+        <am-chart-cursor options="cursorOptions"></am-chart-cursor>
     </am-chart>
+
+    <input type="text" ng-model="cursorOptions.color" ng-model-options="{ updateOn: 'blur' }">
 
     <script src="bower_components/amcharts/dist/amcharts/amcharts.js"></script>
     <script src="bower_components/amcharts/dist/amcharts/serial.js"></script>

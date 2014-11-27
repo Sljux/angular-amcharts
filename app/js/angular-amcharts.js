@@ -26,6 +26,7 @@ angular.module('sljuxAmCharts')
 
                 this.refreshData = function() {
                     $scope.chart.validateData();
+                    
                 };
 
                 this.refreshAttrs = function() {
@@ -41,10 +42,10 @@ angular.module('sljuxAmCharts')
                 pre: function (scope, elem, attrs, ctrl) {
                     var options = scope.options || {};
 
-                    scope.chart = configureChart(options);
-                    configureCategoryAxis(options);
+                    scope.chart = configureChart();
+                    configureCategoryAxis();
 
-                    function configureChart(options) {
+                    function configureChart() {
                         var chart = new AmCharts.AmSerialChart();
 
                         chart.categoryField = options.category;
@@ -66,11 +67,11 @@ angular.module('sljuxAmCharts')
                                 chart.startEffect =         options.animation.startEffect           || 'elastic';
                                 chart.startDuration =       options.animation.startDuration         || 0;
                                 chart.startAlpha =          options.animation.startAlpha            || 1;
-                                chart.sequencedAnimation =  options.animation.sequencedAnimation   !== false;
+                                chart.sequencedAnimation =  options.animation.sequencedAnimation    || false;
                             }
                         }
                     }
-                    function configureCategoryAxis(options) {
+                    function configureCategoryAxis() {
                         var categoryAxis = options.categoryAxis;
 
                         if (categoryAxis) {
@@ -80,7 +81,6 @@ angular.module('sljuxAmCharts')
                                 scope.chart.categoryAxis.minPeriod = categoryAxis.minPeriod;
                             if (categoryAxis.position)
                                 scope.chart.categoryAxis.position = categoryAxis.position;
-
                         }
                     }
                 },
@@ -100,6 +100,10 @@ angular.module('sljuxAmCharts')
                     $timeout(function () {
                         scope.chart.write(scope.options.id);
                     });
+
+                    scope.$watch('data', function () {
+                        ctrl.refreshData();
+                    }, true);
 
                     function configureValueAxes(valueAxes, chart) {
                         if (valueAxes) {
@@ -135,18 +139,19 @@ angular.module('sljuxAmCharts')
         return {
             restrict: "E",
             require: "^amChart",
-            //replace: true,
             scope: {
                 options: '='
             },
             link: function(scope, element, attrs, amChartController) {
-                var options = scope.options || {};
-
-                var graph = configGraph();
+                var graph = new AmCharts.AmGraph();
                 amChartController.addGraph(graph);
 
+                scope.$watch('options', function () {
+                    configGraph();
+                }, true);
+
                 function configGraph() {
-                    var graph = new AmCharts.AmGraph();
+                    var options = scope.options || {};
 
                     graph.valueField = options.value;
                     graph.type = options.type || 'line';
@@ -158,7 +163,7 @@ angular.module('sljuxAmCharts')
                     if (options.title)
                         graph.title = options.title;
 
-                    return graph;
+                    amChartController.refreshAttrs();
                 }
             }
         }
@@ -171,13 +176,15 @@ angular.module('sljuxAmCharts')
                 options: '='
             },
             link: function(scope, element, attrs, amChartController) {
-                var options = scope.options || {};
-
-                var legend = configLegend();
+                var legend = new AmCharts.AmLegend();
                 amChartController.setLegend(legend);
 
+                scope.$watch('options', function () {
+                    configLegend();
+                }, true);
+
                 function configLegend() {
-                    var legend = new AmCharts.AmLegend();
+                    var options = scope.options || {};
 
                     configLabel();
                     configMargins();
@@ -231,7 +238,7 @@ angular.module('sljuxAmCharts')
                         }
                     }
 
-                    return legend;
+                    amChartController.refreshAttrs();
                 }
             }
         }
@@ -246,9 +253,7 @@ angular.module('sljuxAmCharts')
             },
             link: function(scope, element, attrs, amChartController) {
                 var cursor = new AmCharts.ChartCursor();
-
-                configCursor();
-
+                amChartController.setCursor(cursor);
 
                 scope.$watch('options', function () {
                     configCursor();
@@ -267,9 +272,7 @@ angular.module('sljuxAmCharts')
                     cursor.bulletsEnabled = options.bulletsEnabled || false;
                     cursor.bulletSize = options.bulletSize || 8;
 
-                    amChartController.setCursor(cursor);
                     amChartController.refreshAttrs();
-                    amChartController.logChart();
                 }
             }
         }

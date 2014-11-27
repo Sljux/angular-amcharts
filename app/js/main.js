@@ -847,8 +847,6 @@ angular.module('sljuxAmCharts')
                 item.humidity = d.humidity * 100;
                 item.time = moment.unix(d.time).format("YYYY-MM-DD HH:mm:SS");
 
-                //console.log(item);
-
                 result.push(item);
             }
 

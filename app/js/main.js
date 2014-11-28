@@ -4,40 +4,34 @@ angular.module('sljuxAmCharts')
     .controller('MainCtrl', function ($scope) {
         $scope.chartOptions = {
             id: 'chart1',
-            category: 'time',
-            css: {
-                width: '100%',
-                height: '300px'
-            },
-            animation: {
-                startEffect: 'elastic',
-                startDuration: 0.5,
-                startAlpha: 0.5,
-                sequencedAnimation: true
-            },
-            categoryAxis: {
-                parseDates: true,
-                minPeriod: 'hh',
-                position: 'top'
-            }
+            categoryField: 'time',
+            startEffect: 'elastic',
+            startDuration: 0.5,
+            startAlpha: 0.5,
+            sequencedAnimation: true
         };
+
+        $scope.chartCSS = {
+            width: '100%',
+            height: '300px'
+        };
+
+        $scope.categoryAxis = {
+            parseDates: true,
+            minPeriod: 'hh',
+            position: 'top'
+        };
+
 
         $scope.legendOptions = {
             labelText: '[[title]] graph',
-            margin: {
-                //autoMargins: false,
-                top: 10,
-                bottom: 20,
-                left: 400,
-                right: 100
-            },
-            marker: {
-                type: 'circle',
-                size: 20
-            },
-            position: {
-                type: 'top'
-            },
+            marginTop: 10,
+            marginBottom: 20,
+            marginLeft: 400,
+            marginRight: 100,
+            markerType: 'circle',
+            markerSize: 20,
+            position: 'top',
             valueText: '[[value]]'
         };
 
@@ -57,14 +51,14 @@ angular.module('sljuxAmCharts')
         ];
 
         $scope.temperatureGraph = {
-            value: 'temperature',
+            valueField: 'temperature',
             valueAxis: 'v1',
             lineColor: '#FF0000',
             type: 'column',
             title: 'Temperature'
         };
         $scope.humidityGraph = {
-            value: 'humidity',
+            valueField: 'humidity',
             valueAxis: 'v2',
             type: 'smoothedLine',
             title: 'Humidity'

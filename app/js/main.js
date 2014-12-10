@@ -76,6 +76,27 @@ angular.module('sljuxAmCharts')
             bulletSize: 15
         };
 
+        $scope.pieOptions = {
+            id: 'pie',
+            titleField: "content",
+            valueField: "value"
+        };
+
+        $scope.pieData = [
+            {
+                content: 'aaa',
+                value: 7
+            },
+            {
+                content: 'bbb',
+                value: 2
+            },
+            {
+                content: 'ccc',
+                value: 1
+            }
+        ];
+
 
         var data = [{
             "time": 1415948400,

@@ -8,17 +8,19 @@
 </head>
 <body ng-controller="MainCtrl">
 
-    <am-chart options="chartOptions" css="chartCSS" data="chartData" category-axis="categoryAxis" value-axes="chartAxes">
-        <am-chart-graph options="humidityGraph"></am-chart-graph>
-        <am-chart-graph options="temperatureGraph"></am-chart-graph>
-        <am-chart-legend options="legendOptions"></am-chart-legend>
+    <am-chart options="chartOptions" css="chartCSS" data="chartData" category-axis="categoryAxis">
+        <am-chart-graph options="weightGraph"></am-chart-graph>
         <am-chart-cursor options="cursorOptions"></am-chart-cursor>
     </am-chart>
+
+    <am-pie-chart options="pieOptions" css="chartCSS" data="pieData">
+    </am-pie-chart>
 
     <input type="text" ng-model="chartData[10].temperature">
 
     <script src="bower_components/amcharts/dist/amcharts/amcharts.js"></script>
     <script src="bower_components/amcharts/dist/amcharts/serial.js"></script>
+    <script src="bower_components/amcharts/dist/amcharts/pie.js"></script>
     <script src="bower_components/moment/moment.js"></script>
     <script src="bower_components/angular/angular.js"></script>
 

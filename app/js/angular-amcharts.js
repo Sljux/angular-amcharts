@@ -175,7 +175,6 @@ angular.module('sljuxAmCharts')
             controller: function ($scope) {
                 this.refreshData = function() {
                     $scope.chart.validateData();
-                    $scope.chart.animateAgain();
                 };
 
                 this.refreshAttrs = function() {
@@ -195,13 +194,12 @@ angular.module('sljuxAmCharts')
 
                 var chart = new AmCharts.AmPieChart();
                 angular.extend(chart, options);
+                chart.dataProvider = scope.data;
 
                 scope.chart = chart;
-
-                scope.chart.dataProvider = scope.data;
                 scope.$watch('data', function () {
                     scope.chart.dataProvider = scope.data;
-                    //ctrl.refreshData();
+                    ctrl.refreshData();
                 }, true);
 
                 configureTemplate();

@@ -8,7 +8,8 @@ angular.module('sljuxAmCharts')
                 css: '=',
                 categoryAxis: '=',
                 data: '=',
-                valueAxes: '='
+                valueAxes: '=',
+                events: '='
             },
             restrict: 'E',
             replace: false,
@@ -61,6 +62,7 @@ angular.module('sljuxAmCharts')
                     configureTemplate();
                     configureValueAxes();
                     configureDataProvider();
+                    configureEvents();
                     writeChart();
 
                     function configureValueAxes() {
@@ -95,6 +97,11 @@ angular.module('sljuxAmCharts')
                             ctrl.refreshData();
                         }, true);
                     }
+                    function configureEvents() {
+                        angular.forEach(scope.events, function (handler, eventName) {
+                            scope.chart.addListener(eventName, handler);
+                        })
+                    }
                     function writeChart() {
                         $timeout(function () {
                             scope.chart.write(scope.options.id);
@@ -109,17 +116,26 @@ angular.module('sljuxAmCharts')
             restrict: "E",
             require: "^amChart",
             scope: {
-                options: '='
+                options: '=',
+                events: '='
             },
             link: function(scope, element, attrs, amChartController) {
                 var graph = new AmCharts.AmGraph();
                 amChartController.addGraph(graph);
+
+                configureEvents();
 
                 scope.$watch('options', function () {
                     var options = scope.options || {};
                     angular.extend(graph, options);
                     amChartController.refreshAttrs();
                 }, true);
+
+                function configureEvents() {
+                    angular.forEach(scope.events, function (handler, eventName) {
+                        graph.addListener(eventName, handler);
+                    })
+                }
             }
         }
     }])
@@ -167,7 +183,8 @@ angular.module('sljuxAmCharts')
             scope: {
                 options: '=',
                 data: '=',
-                css: '='
+                css: '=',
+                events: '='
             },
             restrict: 'E',
             replace: false,
@@ -203,6 +220,7 @@ angular.module('sljuxAmCharts')
                 }, true);
 
                 configureTemplate();
+                configureEvents();
                 writeChart();
 
                 function configureTemplate() {
@@ -217,6 +235,11 @@ angular.module('sljuxAmCharts')
                         template.css(scope.css);
 
                     return template;
+                }
+                function configureEvents() {
+                    angular.forEach(scope.events, function (handler, eventName) {
+                        scope.chart.addListener(eventName, handler);
+                    })
                 }
                 function writeChart() {
                     $timeout(function () {

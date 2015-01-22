@@ -64,6 +64,20 @@ angular.module('sljuxAmCharts')
             title: 'Humidity'
         };
 
+        $scope.lineGraphEvents = {
+            'clickGraph': log,
+            'clickGraphItem': log,
+            'rightClickGraphItem': log
+        };
+
+        $scope.pieChartEvents = {
+            'clickSlice': log
+        };
+
+        function log(event) {
+            console.log(event);
+        }
+
         $scope.cursorOptions = {
             position: 'mouse',
             valueLineEnabled: true,
